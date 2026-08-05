@@ -36,9 +36,9 @@ hardware:
   amp: true
   batch_size: 16
   accumulate: 4
-  workers: 8
+  workers: 4
   pin_memory: true
-  cache: true
+  cache: "disk"
   vram_min_free_gb: 1.5
 
 # -- Phase 0: Sanity / Smoke Test --

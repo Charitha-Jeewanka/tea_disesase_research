@@ -51,3 +51,4 @@ notebooks/*.ipynb
 # -- Misc --
 *.log
 *.cache
+GEMINI.md
