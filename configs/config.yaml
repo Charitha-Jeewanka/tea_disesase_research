@@ -1,0 +1,101 @@
+# =============================================================================
+# config.yaml -- Single source of truth for the ICAC Tea Disease Research project
+# Edge-Optimized YOLO11n for Ceylon Tea Leaf Disease Detection
+# =============================================================================
+
+# -- Project Paths (relative to project root) --
+paths:
+  project_root: "."
+  dataset_yaml: "datasets/data.yaml"
+  dataset_dir: "datasets"
+  train_images: "datasets/train/images"
+  valid_images: "datasets/valid/images"
+  test_images: "datasets/test/images"
+  weights_dir: "weights"
+  exports_dir: "exports"
+  logs_dir: "logs"
+  base_model: "weights/yolo11n.pt"
+
+# -- Dataset Metadata --
+dataset:
+  num_classes: 8
+  class_names:
+    - "Black rot of tea"
+    - "Brown blight of tea"
+    - "Leaf rust of tea"
+    - "Red Spider infested tea leaf"
+    - "Tea Mosquito bug infested leaf"
+    - "Tea leaf"
+    - "White spot of tea"
+    - "disease"
+  image_size: 640
+
+# -- Hardware Configuration --
+hardware:
+  device: 0
+  amp: true
+  batch_size: 16
+  accumulate: 4
+  workers: 8
+  pin_memory: true
+  cache: true
+  vram_min_free_gb: 1.5
+
+# -- Phase 0: Sanity / Smoke Test --
+phase0:
+  train_subset_size: 50
+  val_subset_size: 20
+  epochs: 2
+  patience: 2
+  project: "logs"
+  name: "phase0_sanity"
+
+# -- Phase 1: Baseline YOLO11n Fine-Tuning --
+phase1:
+  epochs: 150
+  patience: 30
+  optimizer: "AdamW"
+  lr0: 0.001
+  lrf: 0.01
+  cos_lr: true
+  warmup_epochs: 3
+  warmup_momentum: 0.8
+  warmup_bias_lr: 0.1
+  project: "logs"
+  name: "phase1_baseline"
+  # -- Augmentation Settings --
+  augmentation:
+    mosaic: 1.0
+    mixup: 0.15
+    hsv_h: 0.015
+    hsv_s: 0.7
+    hsv_v: 0.4
+    flipud: 0.5
+    fliplr: 0.5
+    degrees: 15.0
+
+# -- Phase 2: Structured Channel Pruning --
+phase2:
+  pruning_step: 0.10
+  pruning_target: 0.30
+  recovery_epochs: 20
+  recovery_patience: 10
+  project: "logs"
+  name: "phase2_pruning"
+
+# -- Phase 3: OpenVINO INT8 Quantization --
+phase3:
+  calibration_images: 500
+  export_format: "openvino"
+  int8: true
+  project: "logs"
+  name: "phase3_quantization"
+
+# -- Phase 4: Benchmarking & EFS --
+phase4:
+  benchmark_warmup_runs: 10
+  benchmark_test_runs: 100
+  project: "logs"
+  name: "phase4_benchmark"
+  results_json: "logs/benchmark_results.json"
+  results_tex: "logs/benchmark_table.tex"

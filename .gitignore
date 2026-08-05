@@ -1,0 +1,53 @@
+# =============================================================================
+# .gitignore -- ICAC Tea Disease Research
+# Only source code, configs, scripts, and docs are tracked.
+# =============================================================================
+
+# -- Python --
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+
+# -- Virtual Environment --
+.venv/
+venv/
+env/
+
+# -- Datasets (large, sourced from Figshare) --
+datasets/train/
+datasets/valid/
+datasets/test/
+datasets/_subset_*/
+
+# -- Model Weights & Exports (binary, too large for git) --
+weights/*.pt
+exports/
+
+# -- Training Outputs --
+runs/
+logs/
+
+# -- IDE / Editor --
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# -- OS --
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# -- Jupyter --
+.ipynb_checkpoints/
+notebooks/*.ipynb
+
+# -- Misc --
+*.log
+*.cache
