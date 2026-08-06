@@ -77,7 +77,7 @@ phase1:
 # -- Phase 2: Structured Channel Pruning --
 phase2:
   pruning_step: 0.10
-  pruning_target: 0.30
+  pruning_target: 0.70
   recovery_epochs: 20
   recovery_patience: 10
   project: "logs"
